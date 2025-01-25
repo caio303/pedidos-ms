@@ -1,4 +1,4 @@
-package com.postech.gerencie.pedidos.gateway.messaging.consumer;
+package com.postech.gerencie.pedidos.controller.consumer;
 
 public interface AtualizacaoPedidoListener {
 

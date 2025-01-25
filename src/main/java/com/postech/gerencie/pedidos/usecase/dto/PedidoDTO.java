@@ -1,11 +1,12 @@
-package com.postech.gerencie.pedidos.domain;
+package com.postech.gerencie.pedidos.usecase.dto;
 
+import com.postech.gerencie.pedidos.domain.QuantidadeItem;
 import com.postech.gerencie.pedidos.domain.enums.StatusPedido;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-public record Pedido(
+public record PedidoDTO(
         String cpfCliente,
         StatusPedido status,
         String descricao,
@@ -15,4 +16,5 @@ public record Pedido(
         String logradouroEntrega,
         LocalDateTime dataCriacao,
         LocalDateTime dataAtualizacao
-) { }
+) {
+}

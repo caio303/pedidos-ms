@@ -2,15 +2,22 @@ package com.postech.gerencie.pedidos.gateway.database.jpa;
 
 import com.postech.gerencie.pedidos.domain.enums.StatusPedido;
 import com.postech.gerencie.pedidos.gateway.PedidoGateway;
+import com.postech.gerencie.pedidos.gateway.queue.dispatcher.NovoPedidoDispatcher;
 import com.postech.gerencie.pedidos.usecase.dto.PedidoDTO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PedidoJpaGateway implements PedidoGateway {
 
+    private final NovoPedidoDispatcher novoPedidoDispatcher;
+
+    public PedidoJpaGateway(NovoPedidoDispatcher novoPedidoDispatcher) {
+        this.novoPedidoDispatcher = novoPedidoDispatcher;
+    }
+
     @Override
     public void registrarAberturaPedido(PedidoDTO pedidoDTO) {
-
+        novoPedidoDispatcher.enviar(pedidoDTO);
     }
 
     @Override

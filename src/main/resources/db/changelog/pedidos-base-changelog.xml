@@ -1,0 +1,164 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <property name="numeric_boolean.type" value="BOOLEAN" dbms="postgresql"/>
+
+    <changeSet author="caio-alves" id="create-tables-cliente_external">
+        <createTable tableName="cliente_external">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="externalid" type="BIGINT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="cpf" type="VARCHAR(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createIndex unique="true" indexName="cliente_external-externalid_idx" tableName="cliente_external">
+            <column name="cpf"/>
+            <column name="externalid"/>
+        </createIndex>
+
+        <createSequence sequenceName="cliente_external_seq" startValue="1" incrementBy="1" dataType="BIGINT" cacheSize="1"/>
+    </changeSet>
+
+    <changeSet author="caio-alves" id="create-tables-item_external">
+        <createTable tableName="item_external">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="externalitemid" type="BIGINT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createIndex unique="true" indexName="item_external-externalid_idx" tableName="item_external">
+            <column name="externalitemid"/>
+        </createIndex>
+
+        <createSequence sequenceName="item_external_seq" startValue="1" incrementBy="1" dataType="BIGINT" cacheSize="1"/>
+    </changeSet>
+
+    <changeSet author="caio-alves" id="create-tables-cupom">
+        <createTable tableName="cupom">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="chave" type="VARCHAR(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="porcentagemoff" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="limitedesconto" type="FLOAT" />
+        </createTable>
+
+        <createSequence sequenceName="cupom_seq" startValue="1" incrementBy="1" dataType="BIGINT" cacheSize="1"/>
+
+        <insert tableName="cupom">
+            <column name="chave">SECRETO</column>
+            <column name="porcentagemoff">0.1</column>
+            <column name="limitedesconto">150</column>
+        </insert>
+
+        <createIndex unique="true" indexName="cupom_chave_idx" tableName="cupom">
+            <column name="chave"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="caio-alves" id="create-tables-pedido">
+        <createTable tableName="pedido">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="clienteid" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="descricao" type="VARCHAR(120)" />
+
+            <column name="cupomid" type="BIGINT" />
+
+            <column name="valortotal" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="cepentrega" type="VARCHAR(8)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="datacriacao" type="DATETIME" defaultValueDate="NOW()" />
+            <column name="dataatualizacao" type="DATETIME" />
+        </createTable>
+
+        <createSequence sequenceName="pedido_seq" startValue="1" incrementBy="1" dataType="BIGINT" cacheSize="1"/>
+
+        <addForeignKeyConstraint
+                constraintName="pedido_cupom_fk"
+                baseColumnNames="cupomid"
+                baseTableName="pedido"
+                referencedColumnNames="id"
+                referencedTableName="cupom"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                validate="true" />
+
+        <addForeignKeyConstraint
+                constraintName="pedido_cliente_fk"
+                baseColumnNames="clienteid"
+                baseTableName="pedido"
+                referencedColumnNames="id"
+                referencedTableName="cliente_external"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                validate="true" />
+    </changeSet>
+
+    <changeSet author="caio-alves" id="create-tables-pedido_item">
+        <createTable tableName="pedido_item">
+            <column name="pedidoid" type="BIGINT" />
+            <column name="itemid" type="BIGINT" />
+        </createTable>
+
+        <createIndex indexName="pedido_item-externalid_idx" tableName="pedido_item">
+            <column name="pedidoid"/>
+            <column name="itemid"/>
+        </createIndex>
+
+        <addForeignKeyConstraint
+                constraintName="pedido_item_pedido_fk"
+                baseColumnNames="pedidoid"
+                baseTableName="pedido_item"
+                referencedColumnNames="id"
+                referencedTableName="pedido"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                validate="true" />
+
+        <addForeignKeyConstraint
+                constraintName="pedido_item_item_fk"
+                baseColumnNames="itemid"
+                baseTableName="pedido_item"
+                referencedColumnNames="id"
+                referencedTableName="item_external"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                validate="true" />
+    </changeSet>
+
+</databaseChangeLog>

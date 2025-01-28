@@ -12,7 +12,7 @@ public record Pedido(
         Collection<QuantidadeItem> itens,
         String cupomAplicado,
         Double valorTotal,
-        String logradouroEntrega,
+        String cepEntrega,
         LocalDateTime dataCriacao,
         LocalDateTime dataAtualizacao
 ) { }

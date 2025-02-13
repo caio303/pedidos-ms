@@ -27,6 +27,10 @@ public enum StatusPedido {
         return null;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getDescricaoPadrao() {
         return descricaoPadrao;
     }

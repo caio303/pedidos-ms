@@ -22,4 +22,12 @@ class CupomTest {
         var valorComDesconto = secretoComLimite.descontar(valorTotal);
         Assertions.assertEquals(950, valorComDesconto);
     }
+
+    @Test
+    void valorComDescontoNaoPodeSerNegativo() {
+        Cupom secretoComPorcentagemAcimaDoValor = new Cupom("SECRETO", 1.2);
+
+        var valorComDesconto = secretoComPorcentagemAcimaDoValor.descontar(valorTotal);
+        Assertions.assertEquals(0, valorComDesconto);
+    }
 }

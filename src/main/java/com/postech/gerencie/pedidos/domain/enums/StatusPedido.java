@@ -2,10 +2,12 @@ package com.postech.gerencie.pedidos.domain.enums;
 
 public enum StatusPedido {
 
-    EM_ABERTO(1, "Pedido em aberto."),
-    PROCESSANDO_PAGAMENTO(2, "Pagamento sendo processado."),
-    CANCELADO(3, "Pedido cancelado."),
-    CONCLUIDO(4, "Pedido concluído com sucesso.");
+    INICIADO(1, "Pedido em aberto."),
+    EM_SEPARACAO(2, "Em separação."),
+    EM_ROTA(3, "Pedido a caminho da sua região."),
+    SAIU_PARA_ENTREGA(4, "Pedido a caminho do seu endereço, fique atento à campainha!."),
+    ENTREGA_CONCLUIDA(5, "Entrega concluída com sucesso."),
+    CANCELADO(6, "Pedido cancelado.");
 
     private int id;
     private String descricaoPadrao;

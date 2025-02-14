@@ -17,12 +17,12 @@ public class Cupom {
     private String chave;
 
     @Column(name = "porcentagemoff")
-    private Float porcentagemOff;
+    private Double porcentagemOff;
 
     @Column(name = "limitedesconto")
-    private Float limiteDesconto;
+    private Double limiteDesconto;
 
-    public Cupom(Long id, String chave, Float porcentagemOff, Float limiteDesconto) {
+    public Cupom(Long id, String chave, Double porcentagemOff, Double limiteDesconto) {
         this.id = id;
         this.chave = chave;
         this.porcentagemOff = porcentagemOff;
@@ -47,19 +47,19 @@ public class Cupom {
         this.chave = chave;
     }
 
-    public Float getPorcentagemOff() {
+    public Double getPorcentagemOff() {
         return porcentagemOff;
     }
 
-    public void setPorcentagemOff(Float porcentagemOff) {
+    public void setPorcentagemOff(Double porcentagemOff) {
         this.porcentagemOff = porcentagemOff;
     }
 
-    public Float getLimiteDesconto() {
+    public Double getLimiteDesconto() {
         return limiteDesconto;
     }
 
-    public void setLimiteDesconto(Float limiteDesconto) {
+    public void setLimiteDesconto(Double limiteDesconto) {
         this.limiteDesconto = limiteDesconto;
     }
 }

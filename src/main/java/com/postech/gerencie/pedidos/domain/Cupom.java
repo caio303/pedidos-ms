@@ -22,12 +22,18 @@ public class Cupom {
             return 0d;
         }
 
-        var valorDescontado = valor * porcentagemOff;
-        if (limiteDesconto != null && valorDescontado > limiteDesconto) {
+        var desconto = valor * porcentagemOff;
+        if (limiteDesconto != null && desconto > limiteDesconto) {
             return valor - limiteDesconto;
         }
 
-        return valor - valorDescontado;
+        var valorDescontado = valor - desconto;
+
+        if (valorDescontado < 0) {
+            return 0d;
+        }
+
+        return valorDescontado;
     }
 
 }

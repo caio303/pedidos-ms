@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface CupomRepository extends JpaRepository<Cupom, Long> {
     Optional<Cupom> findByChaveIgnoreCase(String chave);
 
-    @Query(value = "select c.id from Cupom c where lower(c.chave) = lower(?1);")
+    @Query(value = "select c.id from Cupom c where lower(c.chave) = lower(?1)")
     Long findIdByChaveIgnoreCase(String chave);
 }

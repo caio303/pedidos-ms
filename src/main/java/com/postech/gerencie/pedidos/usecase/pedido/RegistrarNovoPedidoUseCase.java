@@ -8,6 +8,7 @@ import com.postech.gerencie.pedidos.gateway.ClienteGateway;
 import com.postech.gerencie.pedidos.gateway.CupomGateway;
 import com.postech.gerencie.pedidos.gateway.PedidoGateway;
 import com.postech.gerencie.pedidos.usecase.dto.PedidoDTO;
+import com.postech.gerencie.pedidos.usecase.dto.QuantidadeItemDTO;
 import com.postech.gerencie.pedidos.usecase.dto.SituacaoClienteDTO;
 import com.postech.gerencie.pedidos.usecase.dto.novopedido.NovoPedidoDTO;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @Service
 public class RegistrarNovoPedidoUseCase {
@@ -63,7 +65,10 @@ public class RegistrarNovoPedidoUseCase {
         var pedidoDTO = new PedidoDTO(
                 novoPedidoDTO.cpfCliente(),
                 StatusPedido.INICIADO,
-                novoPedidoDTO.quantidadeItemDTOS(),
+                novoPedidoDTO.quantidadeItemDTOS().stream().collect(Collectors.toMap(
+                        QuantidadeItemDTO::itemId,
+                        QuantidadeItemDTO::quantidade
+                )),
                 novoPedidoDTO.cupomAplicado(),
                 valorTotalPedido,
                 novoPedidoDTO.cepEntrega(),

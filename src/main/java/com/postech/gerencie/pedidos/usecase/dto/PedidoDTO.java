@@ -3,12 +3,12 @@ package com.postech.gerencie.pedidos.usecase.dto;
 import com.postech.gerencie.pedidos.domain.enums.StatusPedido;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.Map;
 
 public record PedidoDTO(
         String cpfCliente,
         StatusPedido status,
-        Collection<QuantidadeItemDTO> itens,
+        Map<Long, Double> itens,
         String cupomAplicado,
         Double valorTotal,
         String cepEntrega,

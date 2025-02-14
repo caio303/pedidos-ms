@@ -19,6 +19,8 @@ public class HttpFacade {
 
     private static final Logger log = LoggerFactory.getLogger(HttpFacade.class);
 
+    private static final long TIMEOUT_LIMIT = 1000;
+
     private final WebClient webClient;
     private final String baseUrl;
 
@@ -40,14 +42,12 @@ public class HttpFacade {
         try {
             var response = webClient.get()
                     .uri(uri)
-//                .attributes(stringObjectMap -> stringObjectMap.putAll(parameters))
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
                     .acceptCharset(StandardCharsets.UTF_8)
                     .retrieve();
             responseEntity = response.bodyToMono(returnClazz)
-                    .block(Duration.of(1000, ChronoUnit.MILLIS));
-
+                    .block(Duration.of(TIMEOUT_LIMIT, ChronoUnit.MILLIS));
         } catch (WebClientException error) {
             log.error("Erro na requisição get: {}, {}, {}, {}", this.baseUrl, uri, parameters, returnClazz);
         }

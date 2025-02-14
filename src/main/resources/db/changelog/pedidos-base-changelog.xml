@@ -86,11 +86,9 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="status" type="INT">
+            <column name="statusid" type="INT">
                 <constraints nullable="false"/>
             </column>
-
-            <column name="descricao" type="VARCHAR(120)" />
 
             <column name="cupomid" type="BIGINT" />
 

@@ -1,7 +1,6 @@
 package com.postech.gerencie.pedidos.gateway.http;
 
 import com.postech.gerencie.pedidos.gateway.ClienteGateway;
-import com.postech.gerencie.pedidos.gateway.database.jpa.entities.external.ClienteExternal;
 import com.postech.gerencie.pedidos.gateway.database.jpa.repository.ClienteExternalRepository;
 import com.postech.gerencie.pedidos.usecase.dto.ClienteExternalDTO;
 import com.postech.gerencie.pedidos.usecase.dto.SituacaoClienteDTO;
@@ -17,28 +16,30 @@ public class ClienteExternalHttpGateway implements ClienteGateway {
     @Value("${pedidos.cliente-service.baseurl}")
     private String clienteServiceBaseUrl;
 
+    private final HttpFacade clienteExternalApi =  new HttpFacade(clienteServiceBaseUrl);
+
     private final ClienteExternalRepository clienteExternalRepository;
 
     public ClienteExternalHttpGateway(ClienteExternalRepository clienteExternalRepository) {
         this.clienteExternalRepository = clienteExternalRepository;
     }
 
-    @Override
-    public void cadastrarCliente(String cpf) {
-        if (clienteExternalRepository.existsByCpf(cpf)) {
-            return;
-        }
-
-        ClienteExternalDTO clienteExternalDTO = buscarClientePorCpf(cpf);
-        if (clienteExternalDTO == null) {
-            log.warn("Cliente não encontrado no serviço externo: {}", cpf);
-            return;
-        }
-
-        var clienteExternal = new ClienteExternal(clienteExternalDTO.id(), cpf);
-
-        clienteExternalRepository.save(clienteExternal);
-    }
+//    @Override
+//    public void cadastrarCliente(String cpf) {
+//        if (clienteExternalRepository.existsByCpf(cpf)) {
+//            return;
+//        }
+//
+//        ClienteExternalDTO clienteExternalDTO = buscarClientePorCpf(cpf);
+//        if (clienteExternalDTO == null) {
+//            log.warn("Cliente não encontrado no serviço externo: {}", cpf);
+//            return;
+//        }
+//
+//        var clienteExternal = new ClienteExternal(clienteExternalDTO.id(), cpf);
+//
+//        clienteExternalRepository.save(clienteExternal);
+//    }
 
     @Override
     public SituacaoClienteDTO buscarSituacaoCliente(String cpf) {
@@ -54,8 +55,18 @@ public class ClienteExternalHttpGateway implements ClienteGateway {
         return new SituacaoClienteDTO(cadastrado, ativo);
     }
 
+    @Override
+    public Long buscarId(String cpf) {
+        var clienteDTO = buscarClientePorCpf(cpf);
+        if (clienteDTO == null) {
+            log.debug("Cliente não encontrado: {}", cpf);
+            return null;
+        }
+        return clienteDTO.id();
+    }
+
     private ClienteExternalDTO buscarClientePorCpf(String cpf) {
-        HttpFacade httpFacade = new HttpFacade(clienteServiceBaseUrl);
-        return httpFacade.get("/clientes/" + cpf, ClienteExternalDTO.class);
+        log.debug("Buscou o cliente por cpf: {}", cpf);
+        return clienteExternalApi.get("/clientes/" + cpf, ClienteExternalDTO.class);
     }
 }

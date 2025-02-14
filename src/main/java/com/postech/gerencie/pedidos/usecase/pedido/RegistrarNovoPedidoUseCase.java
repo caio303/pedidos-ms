@@ -53,7 +53,7 @@ public class RegistrarNovoPedidoUseCase {
 
         var chaveCupomAplicado = novoPedidoDTO.cupomAplicado();
         if (chaveCupomAplicado != null && !chaveCupomAplicado.trim().isBlank()) {
-            var cupom = cupomGateway.buscarPorChave(chaveCupomAplicado); // new Cupom("SECRETO", 0.1);
+            var cupom = cupomGateway.buscarPorChave(chaveCupomAplicado);
 
             if (cupom != null) {
                 valorTotalPedido = cupom.descontar(valorTotalItens);
@@ -62,25 +62,23 @@ public class RegistrarNovoPedidoUseCase {
 
         var pedidoDTO = new PedidoDTO(
                 novoPedidoDTO.cpfCliente(),
-                StatusPedido.EM_ABERTO,
-                StatusPedido.EM_ABERTO.getDescricaoPadrao(),
+                StatusPedido.INICIADO,
                 novoPedidoDTO.quantidadeItemDTOS(),
                 novoPedidoDTO.cupomAplicado(),
                 valorTotalPedido,
                 novoPedidoDTO.cepEntrega(),
+                null,
                 LocalDateTime.now(),
                 null
         );
 
         pedidoGateway.registrarAberturaPedido(pedidoDTO);
 
-
-
         return pedidoDTO;
     }
 
     private void validarSituacaoCliente(SituacaoClienteDTO situacaoClienteDTO, String cpf) {
-        if (!situacaoClienteDTO.cadastrado()) {
+        if (situacaoClienteDTO == null || !situacaoClienteDTO.cadastrado()) {
             log.warn("Cliente não cadastrado: {}", cpf);
             throw new ClienteNaoCadastradoException(cpf);
         } else if (!situacaoClienteDTO.ativo()) {

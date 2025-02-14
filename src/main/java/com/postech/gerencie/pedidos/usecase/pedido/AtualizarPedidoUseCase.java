@@ -13,7 +13,7 @@ public class AtualizarPedidoUseCase {
         this.pedidoGateway = pedidoGateway;
     }
 
-    void atualizarPedido(long pedidoId, int novoStatus, String codigoEntrega) {
+    public void atualizarPedido(long pedidoId, int novoStatus, String codigoEntrega) {
         StatusPedido statusPedido = StatusPedido.deId(novoStatus);
         pedidoGateway.atualizarStatusPedido(pedidoId, statusPedido, codigoEntrega);
     }

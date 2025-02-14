@@ -7,7 +7,6 @@ public interface PedidoGateway {
 
     void registrarAberturaPedido(PedidoDTO pedidoDTO);
 
-    void atualizarStatusPedido(Long pedidoId, StatusPedido novoStatus);
     void atualizarStatusPedido(Long pedidoId, StatusPedido novoStatus, String novaDescricao);
 
 }

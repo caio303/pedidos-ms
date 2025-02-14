@@ -8,11 +8,11 @@ import java.util.Collection;
 public record PedidoDTO(
         String cpfCliente,
         StatusPedido status,
-        String descricao,
         Collection<QuantidadeItemDTO> itens,
         String cupomAplicado,
         Double valorTotal,
         String cepEntrega,
+        String codigoRastreio,
         LocalDateTime dataCriacao,
         LocalDateTime dataAtualizacao
 ) {

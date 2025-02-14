@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -40,9 +42,7 @@ public class PedidoJpaGateway implements PedidoGateway {
             cupomId = cupomGateway.buscarIdPorChave(chaveCupom);
         }
 
-        Long clienteId = clienteGateway.buscarId(pedidoDTO.cpfCliente());
-
-        var pedido = toEntity(pedidoDTO, clienteId, cupomId);
+        var pedido = toEntity(pedidoDTO, cupomId);
         pedidoRepository.save(pedido);
         novoPedidoDispatcher.enviar(pedidoDTO);
     }
@@ -58,6 +58,7 @@ public class PedidoJpaGateway implements PedidoGateway {
 
         var pedido = pedidoOpt.get();
         pedido.setStatusId(novoStatus.getId());
+        pedido.setDataAtualizacao(LocalDateTime.now());
 
         if (codigoRastreio != null && !codigoRastreio.trim().isBlank() && !codigoRastreio.equals(pedido.getCodigoRastreio())) {
             pedido.setCodigoRastreio(codigoRastreio);
@@ -66,10 +67,16 @@ public class PedidoJpaGateway implements PedidoGateway {
         log.debug("Pedido atualizado: id={}, novoStatus={}, codigoRastreio={}", pedidoId, novoStatus, codigoRastreio);
     }
 
-    private Pedido toEntity(PedidoDTO pedidoDTO, Long idCliente, Long idCupom) {
+    @Override
+    public List<com.postech.gerencie.pedidos.domain.Pedido> listarPorCpf(String cpf) {
+        pedidoRepository.findAllByCpfCliente(cpf);
+        return List.of();
+    }
+
+    private Pedido toEntity(PedidoDTO pedidoDTO, Long idCupom) {
         var pedido = new Pedido();
 
-        pedido.setClienteId(idCliente);
+        pedido.setCpfCliente(pedidoDTO.cpfCliente());
         pedido.setCupomId(idCupom);
 
         pedido.setCepEntrega(pedidoDTO.cepEntrega());

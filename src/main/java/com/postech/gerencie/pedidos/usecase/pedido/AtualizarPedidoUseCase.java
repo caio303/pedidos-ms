@@ -1,6 +1,7 @@
 package com.postech.gerencie.pedidos.usecase.pedido;
 
 import com.postech.gerencie.pedidos.domain.enums.StatusPedido;
+import com.postech.gerencie.pedidos.exception.StatusInexistenteException;
 import com.postech.gerencie.pedidos.gateway.PedidoGateway;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,11 @@ public class AtualizarPedidoUseCase {
 
     public void atualizarPedido(long pedidoId, int novoStatus, String codigoEntrega) {
         StatusPedido statusPedido = StatusPedido.deId(novoStatus);
+
+        if (statusPedido == null) {
+            throw new StatusInexistenteException(novoStatus);
+        }
+
         pedidoGateway.atualizarStatusPedido(pedidoId, statusPedido, codigoEntrega);
     }
 

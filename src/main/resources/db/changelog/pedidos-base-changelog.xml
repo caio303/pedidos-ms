@@ -82,7 +82,7 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
-            <column name="clienteid" type="BIGINT">
+            <column name="cpfcliente" type="CHAR(11)">
                 <constraints nullable="false"/>
             </column>
 
@@ -96,7 +96,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="cepentrega" type="VARCHAR(8)">
+            <column name="cepentrega" type="CHAR(8)">
                 <constraints nullable="false"/>
             </column>
 

@@ -1,4 +1,4 @@
-package com.postech.gerencie.pedidos.controller.listeners;
+package com.postech.gerencie.pedidos.controller.listener;
 
 import com.postech.gerencie.pedidos.gateway.queue.messages.AtualizacaoPedidoMensagem;
 import com.postech.gerencie.pedidos.usecase.pedido.AtualizarPedidoUseCase;
@@ -22,7 +22,7 @@ public class AtualizacaoPedidoStreamListener implements Consumer<Message<Atualiz
     @Override
     public void accept(Message<AtualizacaoPedidoMensagem> mensagem) {
         var payload = mensagem.getPayload();
-        log.info("Atualizando pedido: {}", payload);
+        log.info("Atualizando status pedido: {}", payload);
         atualizarPedidoUseCase.atualizarPedido(payload.pedidoId(), payload.novoStatusId(), payload.codigoEntrega());
     }
 }

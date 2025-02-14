@@ -16,8 +16,8 @@ public class Pedido {
     @Id
     private Long id;
 
-    @Column(name = "clienteid", nullable = false)
-    private Long clienteId;
+    @Column(name = "cpfcliente", nullable = false)
+    private String cpfCliente;
 
     @Column(name = "cupomid")
     private Long cupomId;
@@ -42,9 +42,9 @@ public class Pedido {
     @Column(name = "dataatualizacao")
     private LocalDateTime dataAtualizacao;
 
-    public Pedido(Long id, Long clienteId, Long cupomId, String cepEntrega, Integer statusId, Float valorTotal, String codigoRastreio, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+    public Pedido(Long id, String cpfCliente, Long cupomId, String cepEntrega, Integer statusId, Float valorTotal, String codigoRastreio, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
-        this.clienteId = clienteId;
+        this.cpfCliente = cpfCliente;
         this.cupomId = cupomId;
         this.cepEntrega = cepEntrega;
         this.statusId = statusId;
@@ -65,12 +65,12 @@ public class Pedido {
         this.id = id;
     }
 
-    public Long getClienteId() {
-        return clienteId;
+    public String getCpfCliente() {
+        return cpfCliente;
     }
 
-    public void setClienteId(Long clienteId) {
-        this.clienteId = clienteId;
+    public void setCpfCliente(String cpfCliente) {
+        this.cpfCliente = cpfCliente;
     }
 
     public Long getCupomId() {

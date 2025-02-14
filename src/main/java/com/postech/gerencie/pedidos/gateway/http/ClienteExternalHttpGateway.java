@@ -24,23 +24,6 @@ public class ClienteExternalHttpGateway implements ClienteGateway {
         this.clienteExternalRepository = clienteExternalRepository;
     }
 
-//    @Override
-//    public void cadastrarCliente(String cpf) {
-//        if (clienteExternalRepository.existsByCpf(cpf)) {
-//            return;
-//        }
-//
-//        ClienteExternalDTO clienteExternalDTO = buscarClientePorCpf(cpf);
-//        if (clienteExternalDTO == null) {
-//            log.warn("Cliente não encontrado no serviço externo: {}", cpf);
-//            return;
-//        }
-//
-//        var clienteExternal = new ClienteExternal(clienteExternalDTO.id(), cpf);
-//
-//        clienteExternalRepository.save(clienteExternal);
-//    }
-
     @Override
     public SituacaoClienteDTO buscarSituacaoCliente(String cpf) {
         boolean cadastrado = false
@@ -55,15 +38,15 @@ public class ClienteExternalHttpGateway implements ClienteGateway {
         return new SituacaoClienteDTO(cadastrado, ativo);
     }
 
-    @Override
-    public Long buscarId(String cpf) {
-        var clienteDTO = buscarClientePorCpf(cpf);
-        if (clienteDTO == null) {
-            log.debug("Cliente não encontrado: {}", cpf);
-            return null;
-        }
-        return clienteDTO.id();
-    }
+//    @Override
+//    public Long buscarId(String cpf) {
+//        var clienteDTO = buscarClientePorCpf(cpf);
+//        if (clienteDTO == null) {
+//            log.debug("Cliente não encontrado: {}", cpf);
+//            return null;
+//        }
+//        return clienteDTO.id();
+//    }
 
     private ClienteExternalDTO buscarClientePorCpf(String cpf) {
         log.debug("Buscou o cliente por cpf: {}", cpf);

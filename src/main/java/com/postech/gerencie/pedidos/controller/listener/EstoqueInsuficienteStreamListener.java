@@ -1,4 +1,4 @@
-package com.postech.gerencie.pedidos.controller.listeners;
+package com.postech.gerencie.pedidos.controller.listener;
 
 import com.postech.gerencie.pedidos.gateway.queue.messages.EstoqueInsuficienteMensagem;
 import org.slf4j.Logger;

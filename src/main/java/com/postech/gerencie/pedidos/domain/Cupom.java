@@ -36,4 +36,7 @@ public class Cupom {
         return valorDescontado;
     }
 
+    public Double getLimiteDesconto() {
+        return limiteDesconto;
+    }
 }

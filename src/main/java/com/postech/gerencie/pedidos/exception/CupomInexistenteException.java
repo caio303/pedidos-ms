@@ -1,6 +1,14 @@
 package com.postech.gerencie.pedidos.exception;
 
-public class CupomInexistenteException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class CupomInexistenteException extends BaseHttpMappedException {
+
+    @Override
+    public HttpStatus getHttpStatus() {
+        return HttpStatus.NOT_FOUND;
+    }
+
     public CupomInexistenteException(String chave) {
         super("Cupom inexistente: " + chave);
     }

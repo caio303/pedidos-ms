@@ -1,7 +1,6 @@
 package com.postech.gerencie.pedidos.gateway.http;
 
 import com.postech.gerencie.pedidos.gateway.ClienteGateway;
-import com.postech.gerencie.pedidos.gateway.database.jpa.repository.ClienteExternalRepository;
 import com.postech.gerencie.pedidos.usecase.dto.ClienteExternalDTO;
 import com.postech.gerencie.pedidos.usecase.dto.SituacaoClienteDTO;
 import org.slf4j.Logger;
@@ -13,16 +12,11 @@ import org.springframework.stereotype.Component;
 public class ClienteExternalHttpGateway implements ClienteGateway {
 
     private static final Logger log = LoggerFactory.getLogger(ClienteExternalHttpGateway.class);
+
     @Value("${pedidos.cliente-service.baseurl}")
     private String clienteServiceBaseUrl;
 
     private final HttpFacade clienteExternalApi =  new HttpFacade(clienteServiceBaseUrl);
-
-    private final ClienteExternalRepository clienteExternalRepository;
-
-    public ClienteExternalHttpGateway(ClienteExternalRepository clienteExternalRepository) {
-        this.clienteExternalRepository = clienteExternalRepository;
-    }
 
     @Override
     public SituacaoClienteDTO buscarSituacaoCliente(String cpf) {
@@ -37,16 +31,6 @@ public class ClienteExternalHttpGateway implements ClienteGateway {
 
         return new SituacaoClienteDTO(cadastrado, ativo);
     }
-
-//    @Override
-//    public Long buscarId(String cpf) {
-//        var clienteDTO = buscarClientePorCpf(cpf);
-//        if (clienteDTO == null) {
-//            log.debug("Cliente não encontrado: {}", cpf);
-//            return null;
-//        }
-//        return clienteDTO.id();
-//    }
 
     private ClienteExternalDTO buscarClientePorCpf(String cpf) {
         log.debug("Buscou o cliente por cpf: {}", cpf);

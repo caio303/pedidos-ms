@@ -6,7 +6,6 @@ import java.util.Collection;
 
 public interface CatalogoGateway {
 
-    void cadastrarItem(Long id);
     Collection<ItemComIdDTO> listarPorIds(Collection<Long> itemIds);
 
 }

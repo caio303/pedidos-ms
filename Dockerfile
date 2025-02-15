@@ -1,7 +1,7 @@
 #
 # Building
 #
-FROM openjdk:17-jdk-slim AS build
+FROM openjdk:21-jdk-slim AS build
 
 COPY pom.xml mvnw ./
 COPY .mvn .mvn
@@ -16,7 +16,7 @@ RUN ./mvnw package -DskipTests
 #
 # Run app
 #
-FROM openjdk:17-jdk-slim AS run
+FROM openjdk:21-jdk-slim AS run
 
 WORKDIR /app
 

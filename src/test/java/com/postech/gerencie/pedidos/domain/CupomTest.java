@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test;
 
 class CupomTest {
 
-    private final static Double valorTotal = 1000d;
+    private static final Double VALOR_TOTAL = 1000d;
 
     @Test
     void descontarSemLimite() {
         Cupom secretoSemLimite = new Cupom("SECRETO", 0.1);
 
-        var valorComDesconto = secretoSemLimite.descontar(valorTotal);
+        var valorComDesconto = secretoSemLimite.descontar(VALOR_TOTAL);
         Assertions.assertEquals(900, valorComDesconto);
     }
 
@@ -19,7 +19,7 @@ class CupomTest {
     void descontarComLimite() {
         Cupom secretoComLimite = new Cupom("SECRETO", 0.1,50d);
 
-        var valorComDesconto = secretoComLimite.descontar(valorTotal);
+        var valorComDesconto = secretoComLimite.descontar(VALOR_TOTAL);
         Assertions.assertEquals(950, valorComDesconto);
     }
 
@@ -27,7 +27,7 @@ class CupomTest {
     void valorComDescontoNaoPodeSerNegativo() {
         Cupom secretoComPorcentagemAcimaDoValor = new Cupom("SECRETO", 1.2);
 
-        var valorComDesconto = secretoComPorcentagemAcimaDoValor.descontar(valorTotal);
+        var valorComDesconto = secretoComPorcentagemAcimaDoValor.descontar(VALOR_TOTAL);
         Assertions.assertEquals(0, valorComDesconto);
     }
 

@@ -22,7 +22,7 @@
             <column name="limitedesconto" type="FLOAT" />
         </createTable>
 
-        <createSequence sequenceName="cupom_seq" startValue="1" incrementBy="1" dataType="BIGINT" cacheSize="1"/>
+        <createSequence sequenceName="cupom_seq" startValue="1" incrementBy="50" dataType="BIGINT" cacheSize="1"/>
 
         <insert tableName="cupom">
             <column name="chave">SECRETO</column>

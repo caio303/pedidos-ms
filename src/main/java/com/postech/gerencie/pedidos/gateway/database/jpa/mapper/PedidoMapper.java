@@ -2,6 +2,7 @@ package com.postech.gerencie.pedidos.gateway.database.jpa.mapper;
 
 import com.postech.gerencie.pedidos.domain.QuantidadeItem;
 import com.postech.gerencie.pedidos.domain.enums.StatusPedido;
+import com.postech.gerencie.pedidos.exception.ErroInternoException;
 import com.postech.gerencie.pedidos.gateway.database.jpa.entities.Cupom;
 import com.postech.gerencie.pedidos.gateway.database.jpa.entities.Pedido;
 import com.postech.gerencie.pedidos.gateway.database.jpa.entities.PedidoItem;
@@ -17,7 +18,7 @@ public class PedidoMapper {
         var status = StatusPedido.deId(entity.getStatusId());
         if (status == null) {
             log.error("Falhou em mapear entity/Pedido para domain/Pedido");
-            throw new RuntimeException("Falhou em mapear entity/Pedido para domain/Pedido");
+            throw new ErroInternoException("Falhou em mapear entity/Pedido para domain/Pedido");
         }
 
         String chaveCupom = null;

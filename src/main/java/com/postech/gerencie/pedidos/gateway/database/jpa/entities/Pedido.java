@@ -51,7 +51,7 @@ public class Pedido {
     @Column(name = "dataatualizacao")
     private LocalDateTime dataAtualizacao;
 
-    @OneToMany(targetEntity = PedidoItem.class, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pedidoId", targetEntity = PedidoItem.class, fetch = FetchType.LAZY)
     private List<PedidoItem> itensPedido;
 
     public Pedido(Long id, String cpfCliente, Long cupomId, String cepEntrega, Integer statusId, Double valorTotal, String codigoRastreio, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao, List<PedidoItem> itensPedido) {

@@ -13,8 +13,6 @@ public class HttpFacade {
 
     private static final Logger log = LoggerFactory.getLogger(HttpFacade.class);
 
-//    private static final long TIMEOUT_LIMIT = 1000;
-
     private final RestClient restClient;
     private final String baseUrl;
 

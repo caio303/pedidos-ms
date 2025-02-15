@@ -9,7 +9,6 @@ import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,7 +16,6 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -38,7 +36,7 @@ public class PedidosExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity handleBadRequest2(HttpServletRequest req, HttpMessageNotReadableException ex) {
+    public ResponseEntity<Error> handleBadRequest2(HttpServletRequest req, HttpMessageNotReadableException ex) {
         log(HttpStatus.BAD_REQUEST, req.getRequestURI());
         return ResponseEntity.badRequest().body(new Error(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
@@ -62,23 +60,23 @@ public class PedidosExceptionHandler {
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity notFoundException(HttpMessageNotReadableException ex) {
+    public ResponseEntity<Error> notFoundException(HttpMessageNotReadableException ex) {
         return ResponseEntity.badRequest().body(new Error(HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity handleAccessDenied() {
+    public ResponseEntity<Error> handleAccessDenied() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Error(HttpStatus.FORBIDDEN, "Acesso negado"));
     }
 
     @ExceptionHandler(BaseHttpMappedException.class)
-    public ResponseEntity handleException(HttpServletRequest req, BaseHttpMappedException ex) {
+    public ResponseEntity<Error> handleException(HttpServletRequest req, BaseHttpMappedException ex) {
         log(ex.getHttpStatus(), req.getRequestURI());
         return ResponseEntity.status(ex.getHttpStatus()).body(new Error(ex.getHttpStatus(), ex.getLocalizedMessage()));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity handleException(Exception ex) {
+    public ResponseEntity<Error> handleException(Exception ex) {
         log.error("Erro interno: {}", ex.getLocalizedMessage(), ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Error("Ocorreu um erro interno, entre em contato ou tente mais tarde..."));
     }
@@ -87,19 +85,4 @@ public class PedidosExceptionHandler {
         log.warn("{}: URL={}", status.name(), uri);
     }
 
-    private record Error (Integer errorCode, String message) {
-        public Error(HttpStatus httpStatus, String message) { this(httpStatus.value(), message); }
-        public Error(String message) {	this(HttpStatus.INTERNAL_SERVER_ERROR.value(), message); }
-    }
-
-    private record ErrorWithFields (int errorCode, String message, Collection<FieldValidationError> erros) {
-        public ErrorWithFields(HttpStatus httpStatus, Collection<FieldValidationError> fieldErrors) {
-            this(httpStatus.value(), httpStatus.getReasonPhrase(), fieldErrors);
-        }
-
-    }
-
-    private record FieldValidationError(String field, String message) {
-        public FieldValidationError(FieldError fe) { this(fe.getField(), fe.getDefaultMessage()); }
-    }
 }

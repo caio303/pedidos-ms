@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/cupom")
-public class CupomController {
+@RequestMapping("/cupons")
+public class CuponsController {
 
     private final CriarCupomUseCase criarCupomUseCase;
     private final ExcluirCupomUseCase excluirCupomUseCase;
     private final ListarTodosCuponsUseCase listarTodosCupons;
 
-    public CupomController(CriarCupomUseCase criarCupomUseCase, ExcluirCupomUseCase excluirCupomUseCase, ListarTodosCuponsUseCase listarTodosCupons) {
+    public CuponsController(CriarCupomUseCase criarCupomUseCase, ExcluirCupomUseCase excluirCupomUseCase, ListarTodosCuponsUseCase listarTodosCupons) {
         this.criarCupomUseCase = criarCupomUseCase;
         this.excluirCupomUseCase = excluirCupomUseCase;
         this.listarTodosCupons = listarTodosCupons;

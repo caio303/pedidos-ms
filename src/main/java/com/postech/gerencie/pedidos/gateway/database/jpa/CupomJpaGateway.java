@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+
 @Component
 public class CupomJpaGateway implements CupomGateway {
 
@@ -52,5 +54,13 @@ public class CupomJpaGateway implements CupomGateway {
         }
 
         return cupomId;
+    }
+
+    @Override
+    public Collection<Cupom> listarTodos() {
+        return cupomRepository.findAll()
+                .stream()
+                .map(cupomMapper::toDomain)
+                .toList();
     }
 }

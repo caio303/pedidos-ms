@@ -2,6 +2,8 @@ package com.postech.gerencie.pedidos.gateway;
 
 import com.postech.gerencie.pedidos.domain.Cupom;
 
+import java.util.Collection;
+
 public interface CupomGateway {
 
     void criarCupom(Cupom cupom);
@@ -12,4 +14,5 @@ public interface CupomGateway {
 
     Long buscarIdPorChave(String chaveCupom);
 
+    Collection<Cupom> listarTodos();
 }

@@ -54,6 +54,7 @@ public class PedidoMapper {
         pedido.setCpfCliente(pedidoDTO.cpfCliente());
         pedido.setCupom(new Cupom(idCupom, null, null, null));
 
+        pedido.setValorTotal(pedidoDTO.valorTotal());
         pedido.setCepEntrega(pedidoDTO.cepEntrega());
         pedido.setCodigoRastreio(pedidoDTO.codigoRastreio());
         pedido.setStatusId(pedidoDTO.status().getId());

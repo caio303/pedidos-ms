@@ -13,6 +13,7 @@ public record Pedido(
         String cupomAplicado,
         Double valorTotal,
         String cepEntrega,
+        String codigoRastreio,
         LocalDateTime dataCriacao,
         LocalDateTime dataAtualizacao
 ) { }

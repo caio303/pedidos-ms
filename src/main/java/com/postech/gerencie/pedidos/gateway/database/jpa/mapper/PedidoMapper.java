@@ -2,6 +2,7 @@ package com.postech.gerencie.pedidos.gateway.database.jpa.mapper;
 
 import com.postech.gerencie.pedidos.domain.QuantidadeItem;
 import com.postech.gerencie.pedidos.domain.enums.StatusPedido;
+import com.postech.gerencie.pedidos.gateway.database.jpa.entities.Cupom;
 import com.postech.gerencie.pedidos.gateway.database.jpa.entities.Pedido;
 import com.postech.gerencie.pedidos.gateway.database.jpa.entities.PedidoItem;
 import com.postech.gerencie.pedidos.usecase.dto.PedidoDTO;
@@ -29,7 +30,7 @@ public class PedidoMapper {
                 .map(this::toQuantidadeItem)
                 .toList();
 
-        new com.postech.gerencie.pedidos.domain.Pedido(
+        return new com.postech.gerencie.pedidos.domain.Pedido(
                 entity.getCpfCliente(),
                 status,
                 status.getDescricaoPadrao(),
@@ -41,7 +42,6 @@ public class PedidoMapper {
                 entity.getDataCriacao(),
                 entity.getDataAtualizacao()
         );
-        return null;
     }
 
     private QuantidadeItem toQuantidadeItem(PedidoItem pedidoItem) {
@@ -52,7 +52,7 @@ public class PedidoMapper {
         var pedido = new Pedido();
 
         pedido.setCpfCliente(pedidoDTO.cpfCliente());
-        pedido.setCupomId(idCupom);
+        pedido.setCupom(new Cupom(idCupom, null, null, null));
 
         pedido.setCepEntrega(pedidoDTO.cepEntrega());
         pedido.setCodigoRastreio(pedidoDTO.codigoRastreio());
@@ -61,6 +61,7 @@ public class PedidoMapper {
         pedido.setDataCriacao(pedidoDTO.dataCriacao());
         pedido.setDataAtualizacao(pedidoDTO.dataAtualizacao());
 
+        // não popula os itens
         return pedido;
     }
 }

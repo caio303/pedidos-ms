@@ -2,10 +2,12 @@ package com.postech.gerencie.pedidos.gateway.database.jpa;
 
 import com.postech.gerencie.pedidos.domain.enums.StatusPedido;
 import com.postech.gerencie.pedidos.exception.PedidoInexistenteException;
-import com.postech.gerencie.pedidos.gateway.ClienteGateway;
 import com.postech.gerencie.pedidos.gateway.CupomGateway;
 import com.postech.gerencie.pedidos.gateway.PedidoGateway;
 import com.postech.gerencie.pedidos.gateway.database.jpa.entities.Pedido;
+import com.postech.gerencie.pedidos.gateway.database.jpa.entities.PedidoItem;
+import com.postech.gerencie.pedidos.gateway.database.jpa.mapper.PedidoMapper;
+import com.postech.gerencie.pedidos.gateway.database.jpa.repository.PedidoItemRepository;
 import com.postech.gerencie.pedidos.gateway.database.jpa.repository.PedidoRepository;
 import com.postech.gerencie.pedidos.gateway.queue.dispatcher.NovoPedidoDispatcher;
 import com.postech.gerencie.pedidos.usecase.dto.PedidoDTO;
@@ -21,16 +23,19 @@ import java.util.Optional;
 public class PedidoJpaGateway implements PedidoGateway {
 
     private static final Logger log = LoggerFactory.getLogger(PedidoJpaGateway.class);
+
+    private final PedidoMapper pedidoMapper = new PedidoMapper();
+
     private final PedidoRepository pedidoRepository;
+    private final PedidoItemRepository pedidoItemRepository;
     private final CupomGateway cupomGateway;
     private final NovoPedidoDispatcher novoPedidoDispatcher;
-    private final ClienteGateway clienteGateway;
 
-    public PedidoJpaGateway(PedidoRepository pedidoRepository, CupomGateway cupomGateway, NovoPedidoDispatcher novoPedidoDispatcher, ClienteGateway clienteGateway) {
+    public PedidoJpaGateway(PedidoRepository pedidoRepository, PedidoItemRepository pedidoItemRepository, CupomGateway cupomGateway, NovoPedidoDispatcher novoPedidoDispatcher) {
         this.pedidoRepository = pedidoRepository;
+        this.pedidoItemRepository = pedidoItemRepository;
         this.cupomGateway = cupomGateway;
         this.novoPedidoDispatcher = novoPedidoDispatcher;
-        this.clienteGateway = clienteGateway;
     }
 
     @Override
@@ -42,8 +47,18 @@ public class PedidoJpaGateway implements PedidoGateway {
             cupomId = cupomGateway.buscarIdPorChave(chaveCupom);
         }
 
-        var pedido = toEntity(pedidoDTO, cupomId);
-        pedidoRepository.save(pedido);
+        var pedido = pedidoMapper.toEntity(pedidoDTO, cupomId);
+        var pedidoSalvo = pedidoRepository.save(pedido);
+
+        var pedidoId = pedidoSalvo.getId();
+        var itens = pedidoDTO.itens()
+                .entrySet()
+                .stream()
+                .map(entry -> new PedidoItem(pedidoId, entry.getKey(), entry.getValue()))
+                .toList();
+
+        pedidoItemRepository.saveAll(itens);
+
         novoPedidoDispatcher.enviar(pedidoDTO);
     }
 
@@ -69,24 +84,10 @@ public class PedidoJpaGateway implements PedidoGateway {
 
     @Override
     public List<com.postech.gerencie.pedidos.domain.Pedido> listarPorCpf(String cpf) {
-        pedidoRepository.findAllByCpfCliente(cpf);
-        return List.of();
+        List<Pedido> allByCpfCliente = pedidoRepository.findAllByCpfCliente(cpf);
+
+        return allByCpfCliente.stream().map(pedidoMapper::toDomain).toList();
     }
 
-    private Pedido toEntity(PedidoDTO pedidoDTO, Long idCupom) {
-        var pedido = new Pedido();
-
-        pedido.setCpfCliente(pedidoDTO.cpfCliente());
-        pedido.setCupomId(idCupom);
-
-        pedido.setCepEntrega(pedidoDTO.cepEntrega());
-        pedido.setCodigoRastreio(pedidoDTO.codigoRastreio());
-        pedido.setStatusId(pedidoDTO.status().getId());
-
-        pedido.setDataCriacao(pedidoDTO.dataCriacao());
-        pedido.setDataAtualizacao(pedidoDTO.dataAtualizacao());
-
-        return pedido;
-    }
 
 }

@@ -36,6 +36,10 @@ public class Cupom {
         return valorDescontado;
     }
 
+    public String getChave() {
+        return chave;
+    }
+
     public Double getLimiteDesconto() {
         return limiteDesconto;
     }

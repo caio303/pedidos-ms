@@ -1,5 +1,8 @@
 package com.postech.gerencie.pedidos.usecase.pedido;
 
+import com.postech.gerencie.pedidos.domain.Pedido;
+import com.postech.gerencie.pedidos.domain.validator.ValidadorCpf;
+import com.postech.gerencie.pedidos.exception.FormatoInvalidoException;
 import com.postech.gerencie.pedidos.gateway.PedidoGateway;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +17,12 @@ public class ListarPedidosPorClienteUseCase {
         this.pedidoGateway = pedidoGateway;
     }
 
-    public List<Object> listarPorCpf(String cpf) {
-        pedidoGateway.listarPorCpf(cpf);
-        return List.of();
+    public List<Pedido> listarPorCpf(String cpf) {
+        var validadorCpf = new ValidadorCpf();
+        if (!validadorCpf.ehCPFValido(cpf)) {
+            throw new FormatoInvalidoException("cpf", cpf);
+        }
+
+        return pedidoGateway.listarPorCpf(cpf);
     }
 }

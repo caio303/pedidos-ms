@@ -12,16 +12,27 @@ public class PedidoItem {
     @Id
     private Long id;
 
-    @Column(name = "pedidoid")
+    @Column(name = "pedidoid", nullable = false)
     private Long pedidoId;
 
-    @Column(name = "itemid")
+    @Column(name = "itemid", nullable = false)
     private Long itemId;
 
-    public PedidoItem(Long id, Long pedidoId, Long itemId) {
+
+    @Column(name = "quantidade", nullable = false)
+    private Double quantidade;
+
+    public PedidoItem(Long id, Long pedidoId, Long itemId, Double quantidade) {
         this.id = id;
         this.pedidoId = pedidoId;
         this.itemId = itemId;
+        this.quantidade = quantidade;
+    }
+
+    public PedidoItem(Long pedidoId, Long itemId, Double quantidade) {
+        this.pedidoId = pedidoId;
+        this.itemId = itemId;
+        this.quantidade = quantidade;
     }
 
     protected PedidoItem() { }
@@ -48,5 +59,13 @@ public class PedidoItem {
 
     public void setItemId(Long itemId) {
         this.itemId = itemId;
+    }
+
+    public Double getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Double quantidade) {
+        this.quantidade = quantidade;
     }
 }

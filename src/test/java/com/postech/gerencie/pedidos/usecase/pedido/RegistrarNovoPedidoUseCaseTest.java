@@ -82,13 +82,19 @@ class RegistrarNovoPedidoUseCaseTest {
         var valorTotalItens = getValorTotalItens(itensQuantidadesMap, itensDTO);
 
         var limiteDesconto = cupomComLimite.getLimiteDesconto();
+        var expectedValorTotal = valorTotalItens - limiteDesconto;
 
         var pedidoDTO = subject.registrarNovoPedido(novoPedidoDTO);
 
+        assertEquals(cpfCliente, pedidoDTO.cpfCliente());
+        assertEquals(cepEntrega, pedidoDTO.cepEntrega());
+        assertEquals(cupomComLimite.getChave(), pedidoDTO.cupomAplicado());
         assertEquals(StatusPedido.INICIADO.getId(), pedidoDTO.status().getId());
-        assertEquals(valorTotalItens - limiteDesconto, pedidoDTO.valorTotal());
+        assertEquals(expectedValorTotal, pedidoDTO.valorTotal());
+        assertEquals(itensQuantidadesMap.size(), pedidoDTO.itens().size());
 
         assertNotNull(pedidoDTO.dataCriacao());
+        assertNull(pedidoDTO.dataAtualizacao());
         assertNull(pedidoDTO.codigoRastreio());
     }
 

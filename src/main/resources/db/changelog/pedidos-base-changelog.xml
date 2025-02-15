@@ -5,24 +5,6 @@
 
     <property name="numeric_boolean.type" value="BOOLEAN" dbms="postgresql"/>
 
-    <changeSet author="caio-alves" id="create-tables-item_external">
-        <createTable tableName="item_external">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-
-            <column name="externalitemid" type="BIGINT">
-                <constraints nullable="false" unique="true"/>
-            </column>
-        </createTable>
-
-        <createIndex unique="true" indexName="item_external-externalid_idx" tableName="item_external">
-            <column name="externalitemid"/>
-        </createIndex>
-
-        <createSequence sequenceName="item_external_seq" startValue="1" incrementBy="1" dataType="BIGINT" cacheSize="1"/>
-    </changeSet>
-
     <changeSet author="caio-alves" id="create-tables-cupom">
         <createTable tableName="cupom">
             <column autoIncrement="true" name="id" type="BIGINT">
@@ -83,7 +65,7 @@
             <column name="dataatualizacao" type="DATETIME" />
         </createTable>
 
-        <createSequence sequenceName="pedido_seq" startValue="1" incrementBy="1" dataType="BIGINT" cacheSize="1"/>
+        <createSequence sequenceName="pedido_seq" startValue="1" incrementBy="50" dataType="BIGINT" cacheSize="1"/>
 
         <createIndex indexName="pedido-codigorastreio_idx" tableName="pedido">
             <column name="codigorastreio" />
@@ -107,6 +89,7 @@
 
     <changeSet author="caio-alves" id="create-tables-pedido_item">
         <createTable tableName="pedido_item">
+            <column name="id" type="BIGINT" />
             <column name="pedidoid" type="BIGINT" />
             <column name="itemid" type="BIGINT" />
             <column name="quantidade" type="FLOAT" />
@@ -117,22 +100,14 @@
             <column name="itemid"/>
         </createIndex>
 
+        <createSequence sequenceName="pedido_item_seq" startValue="1" incrementBy="50" dataType="BIGINT" cacheSize="1"/>
+
         <addForeignKeyConstraint
                 constraintName="pedido_item_pedido_fk"
                 baseColumnNames="pedidoid"
                 baseTableName="pedido_item"
                 referencedColumnNames="id"
                 referencedTableName="pedido"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                validate="true" />
-
-        <addForeignKeyConstraint
-                constraintName="pedido_item_item_fk"
-                baseColumnNames="itemid"
-                baseTableName="pedido_item"
-                referencedColumnNames="id"
-                referencedTableName="item_external"
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 validate="true" />

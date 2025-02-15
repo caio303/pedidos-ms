@@ -63,7 +63,7 @@ public class PedidoJpaGateway implements PedidoGateway {
     }
 
     @Override
-    public void atualizarStatusPedido(Long pedidoId, StatusPedido novoStatus, String codigoRastreio) {
+    public void atualizarStatusPedido(long pedidoId, StatusPedido novoStatus, String codigoRastreio) {
         Optional<Pedido> pedidoOpt = pedidoRepository.findById(pedidoId);
 
         if (pedidoOpt.isEmpty()) {

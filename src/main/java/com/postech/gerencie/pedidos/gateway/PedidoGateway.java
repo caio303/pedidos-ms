@@ -10,7 +10,7 @@ public interface PedidoGateway {
 
     void registrarAberturaPedido(PedidoDTO pedidoDTO);
 
-    void atualizarStatusPedido(Long pedidoId, StatusPedido novoStatus, String novaDescricao);
+    void atualizarStatusPedido(long pedidoId, StatusPedido novoStatus, String novaDescricao);
 
     List<Pedido> listarPorCpf(String cpf);
 }

@@ -22,9 +22,10 @@
             <column name="limitedesconto" type="FLOAT" />
         </createTable>
 
-        <createSequence sequenceName="cupom_seq" startValue="1" incrementBy="50" dataType="BIGINT" cacheSize="1"/>
+        <createSequence sequenceName="cupom_seq" startValue="2" incrementBy="50" dataType="BIGINT" cacheSize="1"/>
 
         <insert tableName="cupom">
+            <column name="id">1</column>
             <column name="chave">SECRETO</column>
             <column name="porcentagemoff">0.1</column>
             <column name="limitedesconto">50</column>

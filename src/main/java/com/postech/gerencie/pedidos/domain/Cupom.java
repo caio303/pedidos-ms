@@ -26,7 +26,9 @@ public class Cupom {
             throw new FormatoInvalidoException("limiteDesconto", limiteDesconto);
         }
 
-        if (limiteDesconto == null || limiteDesconto == 0) {
+        if (limiteDesconto != null && limiteDesconto > 0) {
+            this.limiteDesconto = limiteDesconto;
+        } else {
             this.limiteDesconto = null;
         }
 

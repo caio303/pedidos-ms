@@ -10,6 +10,6 @@ public class FormatoInvalidoException extends BaseHttpMappedException {
     }
 
     public FormatoInvalidoException(String campo, Object valor) {
-        super("Formatação inválida para o campo '" + campo + "', valor: " + valor.toString());
+        super("Formatação inválida para o campo '" + campo + "', valor: " + valor);
     }
 }

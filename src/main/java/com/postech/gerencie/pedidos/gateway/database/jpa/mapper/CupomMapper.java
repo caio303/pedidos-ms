@@ -8,7 +8,12 @@ public class CupomMapper {
         return new Cupom(cupom.getChave(), cupom.getPorcentagemOff(), cupom.getLimiteDesconto());
     }
 
-    public com.postech.gerencie.pedidos.gateway.database.jpa.entities.Cupom toEntity(String chave, double porcentagemOff, Double limiteDesconto) {
-        return new com.postech.gerencie.pedidos.gateway.database.jpa.entities.Cupom(null, chave, porcentagemOff, limiteDesconto);
+    public com.postech.gerencie.pedidos.gateway.database.jpa.entities.Cupom toEntity(Cupom cupomDomain) {
+        return new com.postech.gerencie.pedidos.gateway.database.jpa.entities.Cupom(
+                null,
+                cupomDomain.getChave(),
+                cupomDomain.getPorcentagemOff(),
+                cupomDomain.getLimiteDesconto()
+        );
     }
 }

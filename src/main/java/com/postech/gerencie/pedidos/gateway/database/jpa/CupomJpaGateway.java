@@ -21,14 +21,14 @@ public class CupomJpaGateway implements CupomGateway {
     }
 
     @Override
-    public void criarCupom(String chave, double porcentagemOff, Double limiteDesconto) {
-        var cupomEntity = cupomMapper.toEntity(chave, porcentagemOff, limiteDesconto);
+    public void criarCupom(Cupom cupomDomain) {
+        var cupomEntity = cupomMapper.toEntity(cupomDomain);
         cupomRepository.save(cupomEntity);
     }
 
     @Override
     public void excluirCupom(String chave) {
-
+        cupomRepository.deleteByChaveIgnoreCase(chave);
     }
 
     @Override

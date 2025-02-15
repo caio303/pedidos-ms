@@ -13,4 +13,6 @@ public interface CupomRepository extends JpaRepository<Cupom, Long> {
 
     @Query(value = "select c.id from Cupom c where lower(c.chave) = lower(?1)")
     Long findIdByChaveIgnoreCase(String chave);
+
+    void deleteByChaveIgnoreCase(String chave);
 }

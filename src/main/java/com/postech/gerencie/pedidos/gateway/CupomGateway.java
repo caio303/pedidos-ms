@@ -4,7 +4,7 @@ import com.postech.gerencie.pedidos.domain.Cupom;
 
 public interface CupomGateway {
 
-    void criarCupom(String chave, double porcentagemOff, Double limiteDesconto);
+    void criarCupom(Cupom cupom);
 
     void excluirCupom(String chave);
 

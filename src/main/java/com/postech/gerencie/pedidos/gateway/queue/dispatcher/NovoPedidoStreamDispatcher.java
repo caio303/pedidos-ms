@@ -1,8 +1,6 @@
 package com.postech.gerencie.pedidos.gateway.queue.dispatcher;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.postech.gerencie.pedidos.config.PedidoSeviceProperties;
-import com.postech.gerencie.pedidos.domain.mapper.Mapper;
 import com.postech.gerencie.pedidos.gateway.queue.messages.NovoPedidoMensagem;
 import com.postech.gerencie.pedidos.usecase.dto.PedidoDTO;
 import org.slf4j.Logger;
@@ -16,14 +14,10 @@ public class NovoPedidoStreamDispatcher implements NovoPedidoDispatcher {
 
     private final StreamBridge streamBridge;
     private final PedidoSeviceProperties pedidoSeviceProperties;
-    private final Mapper mapper;
-    private final ObjectMapper objectMapper;
 
-    public NovoPedidoStreamDispatcher(StreamBridge streamBridge, PedidoSeviceProperties pedidoSeviceProperties, Mapper mapper, ObjectMapper objectMapper) {
+    public NovoPedidoStreamDispatcher(StreamBridge streamBridge, PedidoSeviceProperties pedidoSeviceProperties) {
         this.streamBridge = streamBridge;
         this.pedidoSeviceProperties = pedidoSeviceProperties;
-        this.mapper = mapper;
-        this.objectMapper = objectMapper;
     }
 
     @Override

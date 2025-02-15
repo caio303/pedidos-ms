@@ -5,29 +5,6 @@
 
     <property name="numeric_boolean.type" value="BOOLEAN" dbms="postgresql"/>
 
-    <changeSet author="caio-alves" id="create-tables-cliente_external">
-        <createTable tableName="cliente_external">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-
-            <column name="externalid" type="BIGINT">
-                <constraints nullable="false" unique="true"/>
-            </column>
-
-            <column name="cpf" type="VARCHAR(30)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-        </createTable>
-
-        <createIndex unique="true" indexName="cliente_external-externalid_idx" tableName="cliente_external">
-            <column name="cpf"/>
-            <column name="externalid"/>
-        </createIndex>
-
-        <createSequence sequenceName="cliente_external_seq" startValue="1" incrementBy="1" dataType="BIGINT" cacheSize="1"/>
-    </changeSet>
-
     <changeSet author="caio-alves" id="create-tables-item_external">
         <createTable tableName="item_external">
             <column autoIncrement="true" name="id" type="BIGINT">
@@ -68,7 +45,7 @@
         <insert tableName="cupom">
             <column name="chave">SECRETO</column>
             <column name="porcentagemoff">0.1</column>
-            <column name="limitedesconto">150</column>
+            <column name="limitedesconto">50</column>
         </insert>
 
         <createIndex unique="true" indexName="cupom_chave_idx" tableName="cupom">
@@ -100,11 +77,21 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="codigorastreio" type="VARCHAR(36)" />
+
             <column name="datacriacao" type="DATETIME" defaultValueDate="NOW()" />
             <column name="dataatualizacao" type="DATETIME" />
         </createTable>
 
         <createSequence sequenceName="pedido_seq" startValue="1" incrementBy="1" dataType="BIGINT" cacheSize="1"/>
+
+        <createIndex indexName="pedido-codigorastreio_idx" tableName="pedido">
+            <column name="codigorastreio" />
+        </createIndex>
+
+        <createIndex indexName="pedido-cpfcliente_idx" tableName="pedido">
+            <column name="cpfcliente" />
+        </createIndex>
 
         <addForeignKeyConstraint
                 constraintName="pedido_cupom_fk"
@@ -116,21 +103,13 @@
                 onUpdate="RESTRICT"
                 validate="true" />
 
-        <addForeignKeyConstraint
-                constraintName="pedido_cliente_fk"
-                baseColumnNames="clienteid"
-                baseTableName="pedido"
-                referencedColumnNames="id"
-                referencedTableName="cliente_external"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                validate="true" />
     </changeSet>
 
     <changeSet author="caio-alves" id="create-tables-pedido_item">
         <createTable tableName="pedido_item">
             <column name="pedidoid" type="BIGINT" />
             <column name="itemid" type="BIGINT" />
+            <column name="quantidade" type="FLOAT" />
         </createTable>
 
         <createIndex indexName="pedido_item-externalid_idx" tableName="pedido_item">

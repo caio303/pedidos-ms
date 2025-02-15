@@ -4,6 +4,7 @@ import com.postech.gerencie.pedidos.domain.enums.StatusPedido;
 import com.postech.gerencie.pedidos.exception.StatusInexistenteException;
 import com.postech.gerencie.pedidos.gateway.PedidoGateway;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AtualizarPedidoUseCase {
@@ -14,6 +15,7 @@ public class AtualizarPedidoUseCase {
         this.pedidoGateway = pedidoGateway;
     }
 
+    @Transactional
     public void atualizarPedido(long pedidoId, int novoStatus, String codigoEntrega) {
         StatusPedido statusPedido = StatusPedido.deId(novoStatus);
 

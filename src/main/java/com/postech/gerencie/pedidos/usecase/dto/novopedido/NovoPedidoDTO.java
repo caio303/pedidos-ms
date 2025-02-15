@@ -2,16 +2,19 @@ package com.postech.gerencie.pedidos.usecase.dto.novopedido;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.postech.gerencie.pedidos.usecase.dto.QuantidadeItemDTO;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public record NovoPedidoDTO (
-        String cpfCliente,
-        Collection<QuantidadeItemDTO> quantidadeItemDTOS,
+        @NotBlank String cpfCliente,
+        @NotNull @NotEmpty Collection<QuantidadeItemDTO> quantidadeItemDTOS,
         String cupomAplicado,
-        String cepEntrega
+        @NotBlank String cepEntrega
 ) {
 
     @JsonIgnore

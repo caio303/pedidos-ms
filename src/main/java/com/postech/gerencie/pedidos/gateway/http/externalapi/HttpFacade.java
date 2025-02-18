@@ -1,4 +1,4 @@
-package com.postech.gerencie.pedidos.gateway.http;
+package com.postech.gerencie.pedidos.gateway.http.externalapi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +24,16 @@ public class HttpFacade {
                 .build();
     }
 
-    public <T> T get(String uri, Map<String, Object> parameters, Class<T> returnClazz) {
+    public <T> T get(String uri, Map<String, Object[]> parameters, Class<T> returnClazz) {
         T responseEntity = null;
+
+        if (parameters == null) {
+            parameters = Map.of();
+        }
 
         try {
             var response = restClient.get()
-                    .uri(uri)
+                    .uri(uri, parameters)
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
                     .acceptCharset(StandardCharsets.UTF_8)
@@ -38,6 +42,7 @@ public class HttpFacade {
             responseEntity = response.body(returnClazz);
         } catch (Exception error) {
             log.error("Erro na requisição get: {}, {}, {}, {}", this.baseUrl, uri, parameters, returnClazz);
+            throw error;
         }
 
         return responseEntity;

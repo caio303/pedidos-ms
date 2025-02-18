@@ -53,7 +53,9 @@ public class PedidoMapper {
         var pedido = new Pedido();
 
         pedido.setCpfCliente(pedidoDTO.cpfCliente());
-        pedido.setCupom(new Cupom(idCupom, null, null, null));
+        if (idCupom != null && idCupom > 0) {
+            pedido.setCupom(new Cupom(idCupom, null, null, null));
+        }
 
         pedido.setValorTotal(pedidoDTO.valorTotal());
         pedido.setCepEntrega(pedidoDTO.cepEntrega());

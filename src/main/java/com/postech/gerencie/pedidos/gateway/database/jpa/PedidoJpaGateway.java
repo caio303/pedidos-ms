@@ -59,7 +59,7 @@ public class PedidoJpaGateway implements PedidoGateway {
 
         pedidoItemRepository.saveAll(itens);
 
-        novoPedidoDispatcher.enviar(pedidoDTO);
+        novoPedidoDispatcher.enviar(pedidoId, pedidoDTO);
     }
 
     @Override

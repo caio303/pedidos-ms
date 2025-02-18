@@ -25,7 +25,7 @@ class CupomTest {
 
     @Test
     void valorComDescontoNaoPodeSerNegativo() {
-        Cupom secretoComPorcentagemAcimaDoValor = new Cupom("SECRETO", 1.2);
+        Cupom secretoComPorcentagemAcimaDoValor = new Cupom("SECRETO", 1);
 
         var valorComDesconto = secretoComPorcentagemAcimaDoValor.descontar(VALOR_TOTAL);
         Assertions.assertEquals(0, valorComDesconto);

@@ -21,10 +21,10 @@ public class NovoPedidoStreamDispatcher implements NovoPedidoDispatcher {
     }
 
     @Override
-    public void enviar(PedidoDTO pedidoDTO) {
+    public void enviar(Long pedidoId, PedidoDTO pedidoDTO) {
         log.info("Novo Pedido enviado para '{}':  ", pedidoSeviceProperties.getNovoPedidoChannelName());
 
-        var mensagem = new NovoPedidoMensagem(pedidoDTO.cpfCliente(), pedidoDTO.itens(), pedidoDTO.cepEntrega());
+        var mensagem = new NovoPedidoMensagem(pedidoId, pedidoDTO.cpfCliente(), pedidoDTO.itens(), pedidoDTO.cepEntrega());
 
         streamBridge.send(pedidoSeviceProperties.getNovoPedidoChannelName(), mensagem);
     }

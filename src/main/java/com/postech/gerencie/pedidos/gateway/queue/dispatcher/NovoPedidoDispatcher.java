@@ -4,6 +4,5 @@ import com.postech.gerencie.pedidos.usecase.dto.PedidoDTO;
 
 public interface NovoPedidoDispatcher {
 
-    void enviar(PedidoDTO novoPedidoDTO);
-
+    void enviar(Long pedidoId, PedidoDTO pedidoDTO);
 }

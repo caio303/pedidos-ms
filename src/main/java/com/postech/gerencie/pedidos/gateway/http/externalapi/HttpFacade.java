@@ -3,7 +3,9 @@ package com.postech.gerencie.pedidos.gateway.http.externalapi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 import java.nio.charset.StandardCharsets;
@@ -41,6 +43,14 @@ public class HttpFacade {
 
             responseEntity = response.body(returnClazz);
         } catch (Exception error) {
+            if (error instanceof HttpClientErrorException) {
+                var httpClientErrorException = (HttpClientErrorException) error;
+                var statusCode = httpClientErrorException.getStatusCode().value();
+                if (HttpStatus.NOT_FOUND.value() == statusCode) {
+                    log.error("Entidade {} não encontrada: {}, {}, {}", returnClazz, this.baseUrl, uri, parameters);
+                    return null;
+                }
+            }
             log.error("Erro na requisição get: {}, {}, {}, {}", this.baseUrl, uri, parameters, returnClazz);
             throw error;
         }

@@ -6,7 +6,7 @@ public class ClienteInexistenteException extends BaseHttpMappedException {
 
     @Override
     public HttpStatus getHttpStatus() {
-        return HttpStatus.NOT_FOUND;
+        return HttpStatus.UNAUTHORIZED;
     }
 
     public ClienteInexistenteException(String cpf) {

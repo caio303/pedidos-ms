@@ -19,6 +19,9 @@ public class HttpFacade {
     private final String baseUrl;
 
     public HttpFacade(String baseUrl) {
+        if (!baseUrl.startsWith("http")) {
+            baseUrl = "http://" + baseUrl;
+        }
         this.baseUrl = baseUrl;
 
         this.restClient = RestClient.builder()
